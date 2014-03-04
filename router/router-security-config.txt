@@ -1,0 +1,142 @@
+!
+! Immediate Stuff
+no cdp run
+no snmp-server
+no ip http server
+no service tcp-small-servers
+no service udp-small-servers
+no ip bootp server
+no ip dhcp bootp ignore
+no service finger
+no ip source-route
+no ip identd
+no ip name-server
+no ip classless
+no ip http secure-server
+no service config
+no boot network
+no ntp server
+no ftp-server write-enable
+no ip finger
+ip options drop
+no service pad
+no lldp run global
+!
+! - Set the DNS Server
+ip name-server x.x.x.10
+!
+!
+! - Secure the boot image
+secure boot-image
+! Use after we have our config
+! secure boot-config
+!
+! - Limit from which interfaces ssh and other management stuff can be accessed from (added 12.4(6)T)
+!
+!control-plane host
+!management-interface INSIDE_INTERFACE allow ssh
+!exit
+!
+service tcp-keep
+service timestamps log datetime msec localtime show-timezone
+service sequence-numbers logging rate-limit all 10 except error
+!
+! - Enable keepalives
+service tcp-keepalives-out
+service tcp-keepalives-in
+!
+! Set our username and password
+!
+username USERNAME secret PASSWORD 
+!
+no username Cisco
+no username cisco
+no username user
+!
+service pass
+!
+! - Configure SSH
+!
+crypto key gen rsa
+ip ssh ver 2 
+ip ssh auth 2
+ip ssh time 30
+!
+! - Lines
+!
+line con 0
+!
+logging syn
+login local
+exit
+!
+ip access stand DENY_ALL
+! 
+deny any
+!
+ip access ext REMOTE
+!
+permit tcp OUR_IP_RANGE OUR_MASK host ROUTER_IP eq 22
+deny ip any any log-input
+exit
+!
+line vty 0 1
+!
+transport input ssh
+transport pref ssh
+login local
+access REMOTE in
+exec-timeout 2
+service tcp-keep
+exit
+!
+no line vty 5 1000000000000000000000
+!
+line vty 2 4
+!
+transport input none
+transport preferred none
+access DENY_ALL in
+!
+privilege exec level 15 connect
+privilege exec level 15 telnet
+privilege exec level 15 ssh
+privilege exec level 15 rlogin
+privilege exec level 15 show ip access-lists
+privilege exec level 15 show access-lists
+privilege exec level 15 show logging
+privilege exec level 15 show ip
+!
+!
+! - INTERFACES
+!
+int INTERFACE_NAME_OUTSIDE
+!
+no ip redirects
+no ip directed-broadcast
+no ip mask-reply
+no ip unreachables
+no ip proxy-arp
+ip verify unicast reverse-path
+!
+int INTERFACE_NAME_INSIDE
+!
+ no ip redirects
+ no ip directed-broadcast
+ no ip mask-reply
+ no ip unreachables
+ no ip proxy-arp
+!
+
+
+
+
+
+
+Other Configs
+
+Logging:
+logging trap 6
+logging SYSLOG_SERVER_IP
+
+Will need to modify access lists for syslog port
