@@ -3,6 +3,16 @@ ip acc extend LAN_INBOUND
 !
 remark -- Disallow other bad stuff --
 !
+deny ip 248.0.0.0 7.255.255.255 any
+deny ip any 248.0.0.0 7.255.255.255
+deny ip 255.255.255.255 0.0.0.0 any
+deny ip any 255.255.255.255 0.0.0.0
+deny ip 192.0.2.0 0.0.0.255 any
+deny ip any 192.0.2.0 0.0.0.255 any
+deny ip host 0.0.0.0 any log-input
+deny ip any host 0.0.0.0 log-input
+deny ip host 255.255.255.255 any log-input
+deny ip any host 255.255.255.255 log-input
 deny ip 127.0.0.0 0.255.255.255 any log-input
 deny ip any 127.0.0.0 0.255.255.255 log-input
 deny ip 224.0.0.0 15.255.255.255 any log-input
@@ -30,7 +40,6 @@ remark -- Allow certain ICMP --
 !
 permit icmp OUR_IP_RANGE OUR_MASK any 0
 permit icmp OUR_IP_RANGE OUR_MASK any 3 4
-! Source quench is deprecated
 permit icmp OUR_IP_RANGE OUR_MASK any 8
 permit icmp OUR_IP_RANGE OUR_MASK any 11
 permit icmp OUR_IP_RANGE OUR_MASK any 12

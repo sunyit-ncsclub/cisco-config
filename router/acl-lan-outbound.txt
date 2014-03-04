@@ -1,26 +1,12 @@
 ip acc extend LAN_OUTBOUND
 !
 !
-remark -- Disallow bad stuff --
-!
-deny ip 127.0.0.0 0.255.255.255 any log-input
-deny ip any 127.0.0.0 0.255.255.255 log-input
-deny ip 224.0.0.0 15.255.255.255 any log-input
-deny ip any 224.0.0.0 15.255.255.255 log-input
-deny ip 240.0.0.0 7.255.255.255 any log-input
-deny ip any 240.0.0.0 7.255.255.255 log-input
-deny ip 0.0.0.0 0.255.255.255 any log-input
-deny ip any 0.0.0.0 0.255.255.255 log-input
-deny ip 169.254.0.0 0.0.255.255 any log-input
-deny ip any 169.254.0.0 0.0.255.255 log-input
-!
-!
 evaluate LAN_HOST_REFLECTIVE
 !
 !
 remark -- If servers in LAN that need outside access, allow here --
 !
-permit tcp any host SERVER_IP eq NEEDED_PORT reflect SERVER_REFLECTIVE
+permit tcp any host SERVER_IP eq NEEDED_PORT reflect LAN_SERVER_REFLECTIVE
 …
 !
 !

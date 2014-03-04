@@ -8,6 +8,16 @@ deny ip any OUR_LAN_RANGE log-input
 !
 remark -- Disallow bad stuff --
 !
+deny ip 248.0.0.0 7.255.255.255 any
+deny ip any 248.0.0.0 7.255.255.255
+deny ip 255.255.255.255 0.0.0.0 any
+deny ip any 255.255.255.255 0.0.0.0
+deny ip 192.0.2.0 0.0.0.255 any
+deny ip any 192.0.2.0 0.0.0.255 any
+deny ip host 0.0.0.0 any log-input
+deny ip any host 0.0.0.0 log-input
+deny ip host 255.255.255.255 any log-input
+deny ip any host 255.255.255.255 log-input
 deny ip 127.0.0.0 0.255.255.255 any log-input
 deny ip any 127.0.0.0 0.255.255.255 log-input
 deny ip 224.0.0.0 15.255.255.255 any log-input
@@ -18,7 +28,6 @@ deny ip 0.0.0.0 0.255.255.255 any log-input
 deny ip any 0.0.0.0 0.255.255.255 log-input
 deny ip 169.254.0.0 0.0.255.255 any log-input
 deny ip any 169.254.0.0 0.0.255.255 log-input
-deny ip OUR_IP_RANGE OUR_MASK any
 !
 !
 remark -- Allow returning server traffic --

@@ -1,5 +1,71 @@
 ip acc extend WIRELESS_INBOUND
 !
 !
-
+remark -- Deny connections to the router to this box --
+!
+deny ip any host ROUTER_INTERFACE_IP log-input
+!
+!
+remark -- Deny Fragments --
+!
+deny tcp any any fragments log-input
+deny udp any any fragments log-input
+deny icmp any any fragments log-input
+deny ip any any fragments log-input
+!
+!
+remark -- Disallow other bad stuff --
+!
+deny ip 248.0.0.0 7.255.255.255 any
+deny ip any 248.0.0.0 7.255.255.255
+deny ip 255.255.255.255 0.0.0.0 any
+deny ip any 255.255.255.255 0.0.0.0
+deny ip 192.0.2.0 0.0.0.255 any
+deny ip any 192.0.2.0 0.0.0.255 any
+deny ip host 0.0.0.0 any log-input
+deny ip any host 0.0.0.0 log-input
+deny ip host 255.255.255.255 any log-input
+deny ip any host 255.255.255.255 log-input
+deny ip 127.0.0.0 0.255.255.255 any log-input
+deny ip any 127.0.0.0 0.255.255.255 log-input
+deny ip 224.0.0.0 15.255.255.255 any log-input
+deny ip any 224.0.0.0 15.255.255.255 log-input
+deny ip 240.0.0.0 7.255.255.255 any log-input
+deny ip any 240.0.0.0 7.255.255.255 log-input
+deny ip 0.0.0.0 0.255.255.255 any log-input
+deny ip any 0.0.0.0 0.255.255.255 log-input
+deny ip 169.254.0.0 0.0.255.255 any log-input
+deny ip any 169.254.0.0 0.0.255.255 log-input
+!
+!
+remark -- Deny connections to LAN parts -- 
+!
+deny ip any WIRELESS_IP WIRELESS_MASK log-input
+!
+!
+remark -- Allow certain ICMP --
+!
+permit icmp OUR_IP_RANGE OUR_MASK any 0
+permit icmp OUR_IP_RANGE OUR_MASK any 3 4
+permit icmp OUR_IP_RANGE OUR_MASK any 8
+permit icmp OUR_IP_RANGE OUR_MASK any 11
+permit icmp OUR_IP_RANGE OUR_MASK any 12
+!
+!
+remark -- Deny all other ICMP --
+!
+deny icmp any any log-input
+!
+!
+remark -- Allow only necessary services from the hosts --
+!
+permit tcp WIRELESS_IP WIRELESS_MASK any eq NEEDED_PORT reflect WIRELESS_HOST_REFLECTIVE
+...
+!
+!
+remark -- Block everything else -- 
+!
+deny ip any any log-input
+!
+!
 !

@@ -3,10 +3,10 @@ ip acc extend OUTSIDE_OUTBOUND
 !
 remark -- Deny Fragments --
 !
-deny tcp any any fragments
-deny udp any any fragments
-deny icmp any any fragments
-deny ip any any fragments
+deny tcp any any fragments log-input
+deny udp any any fragments log-input
+deny icmp any any fragments log-input
+deny ip any any fragments log-input
 !
 !
 remark -- Disallow spoofing --
@@ -16,6 +16,12 @@ deny ip any OUR_IP_RANGE OUR_MASK
 !
 remark -- Disallow other bad stuff --
 !
+deny ip 248.0.0.0 7.255.255.255 any
+deny ip any 248.0.0.0 7.255.255.255
+deny ip 255.255.255.255 0.0.0.0 any
+deny ip any 255.255.255.255 0.0.0.0
+deny ip 192.0.2.0 0.0.0.255 any
+deny ip any 192.0.2.0 0.0.0.255 any
 deny ip host 0.0.0.0 any log-input
 deny ip any host 0.0.0.0 log-input
 deny ip host 255.255.255.255 any log-input
@@ -37,7 +43,10 @@ remark -- Allow connections to services to return out --
 evaluate OUTSIDE_INBOUND_REFLECTIVE
 !
 !
-permit ip OUR_IP_RANGE OUR_MASK reflect OUTSIDE_OUTBOUND_REFLECTIVE
+remark -- Allow connections from our range out --
+!
+permit ip OUR_IP_RANGE OUR_MASK any reflect OUTSIDE_OUTBOUND_REFLECTIVE
+!
 !
 remark -- Block everything else -- 
 !
