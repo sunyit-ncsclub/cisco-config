@@ -1,0 +1,105 @@
+ip acc extend OUTSIDE_INBOUND
+!
+!
+remark -- Deny connections to this device --
+!
+!deny ip any host ROUTER’s_IP log-input
+!
+!
+remark -- Deny Fragments --
+!
+deny tcp any any fragments
+deny udp any any fragments
+deny icmp any any fragments
+deny ip any any fragments
+!
+remark -- Deny Packets with IP Options --
+!
+deny ip any any option any-options
+!
+!
+remark -- Allow returning connections --
+!
+evaluate OUTSIDE_OUTBOUND_REFLECTIVE
+!
+!
+remark -- Disallow spoofing --
+!
+deny ip x.x.x.0  any
+!
+!
+remark -- Disallow other bad stuff --
+!
+deny ip host 0.0.0.0 any
+deny ip 0.0.0.0 0.255.255.255 any
+deny ip 10.0.0.0 0.255.255.255 any
+deny ip 127.0.0.0 0.255.255.255 any
+deny ip 169.254.0.0 0.0.255.255 any
+deny ip 172.16.0.0 0.15.255.255 any
+deny ip 192.0.2.0 0.0.0.255 any
+deny ip 192.168.0.0 0.0.255.255 any
+deny ip 224.0.0.0 15.255.255.255 any
+deny ip 240.0.0.0 7.255.255.255 any
+deny ip 248.0.0.0 7.255.255.255 any
+deny ip 255.255.255.255 0.0.0.0 any
+deny ip host 0.0.0.0 any log-input
+deny ip any host 0.0.0.0 log-input
+deny ip host 255.255.255.255 any log-input
+deny ip any host 255.255.255.255 log-input
+deny ip 127.0.0.0 0.255.255.255 any log-input
+deny ip any 127.0.0.0 0.255.255.255 log-input
+deny ip 224.0.0.0 15.255.255.255 any log-input
+deny ip any 224.0.0.0 15.255.255.255 log-input
+deny ip 240.0.0.0 7.255.255.255 any log-input
+deny ip any 240.0.0.0 7.255.255.255 log-input
+deny ip 0.0.0.0 0.255.255.255 any log-input
+deny ip any 0.0.0.0 0.255.255.255 log-input
+deny ip 169.254.0.0 0.0.255.255 any log-input
+deny ip any 169.254.0.0 0.0.255.255 log-input
+!
+!
+remark -- Allow certain ICMP --
+!
+permit icmp any OUR_IP_RANGE OUR_MASK 0
+permit icmp any OUR_IP_RANGE OUR_MASK 3 4
+! Source quench is deprecated
+permit icmp any OUR_IP_RANGE OUR_MASK 8
+permit icmp any OUR_IP_RANGE OUR_MASK 11
+permit icmp any OUR_IP_RANGE OUR_MASK 12
+!
+!
+remark -- Disallow all other ICMP --
+!
+deny icmp any any log-input
+!
+!
+remark -- Allow connections to services -- 
+!
+remark -- Allow connections to Web/FTP server --
+!
+permit tcp any host x.x.x.14 eq 80
+permit tcp any host x.x.x.14 eq 443
+permit tcp any host x.x.x.14 eq 21
+permit tcp any host x.x.x.14 eq 20
+!
+remark -- Allow connections to mail server --
+!
+permit tcp any host x.x.x.12 eq 25
+permit tcp any host x.x.x.12 eq 110
+permit tcp any host x.x.x.12 eq 143
+! - For Secure IMAP
+permit tcp any host x.x.x.12 eq 993
+! - Mail server may also have webmail
+permit tcp any host x.x.x.12 eq 80
+permit tcp any host x.x.x.12 eq 443
+!
+remark -- Allow connections to DNS server --
+permit tcp any host x.x.x.10 eq 53
+permit udp any host x.x.x.10 eq 53
+!
+!
+!
+remark -- Block everything else -- 
+!
+deny ip any any log-input
+!

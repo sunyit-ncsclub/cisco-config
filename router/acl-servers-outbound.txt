@@ -1,0 +1,45 @@
+ip acc extend SERVERS_OUTBOUND
+!
+!
+remark -- Disallow bad stuff --
+!
+deny ip 127.0.0.0 0.255.255.255 any log-input
+deny ip any 127.0.0.0 0.255.255.255 log-input
+deny ip 224.0.0.0 15.255.255.255 any log-input
+deny ip any 224.0.0.0 15.255.255.255 log-input
+deny ip 240.0.0.0 7.255.255.255 any log-input
+deny ip any 240.0.0.0 7.255.255.255 log-input
+deny ip 0.0.0.0 0.255.255.255 any log-input
+deny ip any 0.0.0.0 0.255.255.255 log-input
+deny ip 169.254.0.0 0.0.255.255 any log-input
+deny ip any 169.254.0.0 0.0.255.255 log-input
+!
+!
+evaluate GENERAL_REFLECTIVE
+!
+!
+remark -- Allow server access --
+!
+permit tcp any host SERVER_IP eq NEEDED_PORT reflect SERVER_REFLECTIVE
+…
+!
+!
+remark -- Allow certain ICMP --
+!
+permit icmp any OUR_IP_RANGE OUR_MASK 0
+permit icmp any OUR_IP_RANGE OUR_MASK 3 4
+permit icmp any OUR_IP_RANGE OUR_MASK 4
+permit icmp any OUR_IP_RANGE OUR_MASK 8
+permit icmp any OUR_IP_RANGE OUR_MASK 11
+permit icmp any OUR_IP_RANGE OUR_MASK 12
+!
+!
+remark -- Deny all other ICMP --
+!
+deny icmp any any log-input
+!
+!
+remark -- Block everything else -- 
+!
+deny ip any any log-input
+!
