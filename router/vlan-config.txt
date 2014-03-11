@@ -1,0 +1,9 @@
+interface INTx/x.VLAN_NUMBER
+!
+description -- DESCRIPTION --
+encap dot1q VLAN_NUMBER
+ip address VLAN_NUMBER_ADDRESS MASK
+! - If nat
+ip nat inside
+!
+!

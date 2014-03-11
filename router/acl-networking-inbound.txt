@@ -1,14 +1,25 @@
-ip acc extend SERVERS_OUTBOUND
+ip acc extend NETWORKING_INBOUND
 !
 !
-evaluate SERVERS_GENERAL_REFLECTIVE
+remark -- Deny Fragments --
+!
+deny tcp any any fragments log-input
+deny udp any any fragments log-input
+deny icmp any any fragments log-input
+deny ip any any fragments log-input
 !
 !
-remark -- Allow server access --
+remark -- Deny Packets with IP Options --
+!
+deny ip any any option any-options log-input
+!
+!
+evaluate NETWORKING_REFLECTIVE
+!
+!
+remark -- Allow SYSLOG from boxes --
 !
 permit udp host NETWORKING_DEVICE host SYSLOG_SERVER eq 514
-permit tcp any host SERVER_IP eq NEEDED_PORT reflect SERVER_REFLECTIVE
-…
 !
 !
 remark -- Allow certain ICMP --

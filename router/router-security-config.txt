@@ -118,14 +118,23 @@ no ip mask-reply
 no ip unreachables
 no ip proxy-arp
 ip verify unicast reverse-path
+! - deny IPv6
+ipv6 access-list DENY-IPV6
+!
 !
 int INTERFACE_NAME_INSIDE
 !
- no ip redirects
- no ip directed-broadcast
- no ip mask-reply
- no ip unreachables
- no ip proxy-arp
+no ip redirects
+no ip directed-broadcast
+no ip mask-reply
+no ip unreachables
+no ip proxy-arp
+! - deny IPv6
+ipv6 access-list DENY-IPV6
+! On interfaces that need DHCP server on separate network
+!
+ip helper-address DHCP_SERVER_ADDRESS
+!
 !
 
 

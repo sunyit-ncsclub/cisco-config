@@ -1,13 +1,26 @@
 ip acc extend LAN_INBOUND
 !
 !
+remark -- Deny Fragments --
+!
+deny tcp any any fragments log-input
+deny udp any any fragments log-input
+deny icmp any any fragments log-input
+deny ip any any fragments log-input
+!
+!
+remark -- Deny Packets with IP Options --
+!
+deny ip any any option any-options log-input
+!
+!
 remark -- Disallow other bad stuff --
 !
-deny ip 248.0.0.0 7.255.255.255 any
-deny ip any 248.0.0.0 7.255.255.255
-deny ip 255.255.255.255 0.0.0.0 any
-deny ip any 255.255.255.255 0.0.0.0
-deny ip 192.0.2.0 0.0.0.255 any
+deny ip 248.0.0.0 7.255.255.255 any log-input
+deny ip any 248.0.0.0 7.255.255.255 log-input
+deny ip 255.255.255.255 0.0.0.0 any log-input
+deny ip any 255.255.255.255 0.0.0.0 log-input
+deny ip 192.0.2.0 0.0.0.255 any log-input
 deny ip any 192.0.2.0 0.0.0.255 any
 deny ip host 0.0.0.0 any log-input
 deny ip any host 0.0.0.0 log-input
@@ -31,6 +44,17 @@ evaluate LAN_SERVER_REFLECTIVE
 !
 !
 remark -- Allow only necessary services from the hosts --
+!
+permit tcp x.x.x.0 255.255.255.0 any eq 22 reflect LAN_HOST_REFLECTIVE
+permit tcp x.x.x.0 255.255.255.0 any eq 80 reflect LAN_HOST_REFLECTIVE
+permit tcp x.x.x.0 255.255.255.0 any eq 443 reflect LAN_HOST_REFLECTIVE
+permit tcp x.x.x.0 255.255.255.0 any eq 21 reflect LAN_HOST_REFLECTIVE
+permit tcp x.x.x.0 255.255.255.0 any eq 20 reflect LAN_HOST_REFLECTIVE
+permit tcp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
+permit udp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
+! if needed for DHCP
+permit udp x.x.x.0 255.255.255.0 any eq 67 reflect LAN_HOST_REFLECTIVE
+permit udp x.x.x.0 255.255.255.0 any eq 68 reflect LAN_HOST_REFLECTIVE
 !
 permit tcp OUR_IP_RANGE OUR_MASK any eq NEEDED_PORT reflect LAN_HOST_REFLECTIVE
 ...

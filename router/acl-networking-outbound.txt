@@ -1,14 +1,9 @@
-ip acc extend SERVERS_OUTBOUND
+ip acc extend NETWORKING_OUTBOUND
 !
 !
-evaluate SERVERS_GENERAL_REFLECTIVE
+remark -- Allow SSH to boxes --
 !
-!
-remark -- Allow server access --
-!
-permit udp host NETWORKING_DEVICE host SYSLOG_SERVER eq 514
-permit tcp any host SERVER_IP eq NEEDED_PORT reflect SERVER_REFLECTIVE
-…
+permit tcp OUR_IP_RANGE IP_MASK host NETWORKING_DEVICE eq 22 reflect NETWORKING_REFLECTIVE
 !
 !
 remark -- Allow certain ICMP --

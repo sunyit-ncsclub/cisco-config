@@ -32,15 +32,15 @@ deny ip x.x.x.0  255.255.255.0 any
 remark -- Disallow unroutable addresses --
 !
 !
-!deny ip 10.0.0.0 0.255.255.255 any
-!deny ip 172.16.0.0 0.15.255.255 any
-!deny ip 192.168.0.0 0.0.255.255 any
-deny ip 248.0.0.0 7.255.255.255 any
-deny ip any 248.0.0.0 7.255.255.255
-deny ip 255.255.255.255 0.0.0.0 any
-deny ip any 255.255.255.255 0.0.0.0
-deny ip 192.0.2.0 0.0.0.255 any
-deny ip any 192.0.2.0 0.0.0.255 any
+!deny ip 10.0.0.0 0.255.255.255 any log-input
+!deny ip 172.16.0.0 0.15.255.255 any log-input
+!deny ip 192.168.0.0 0.0.255.255 any log-input
+deny ip 248.0.0.0 7.255.255.255 any log-input
+deny ip any 248.0.0.0 7.255.255.255 log-input
+deny ip 255.255.255.255 0.0.0.0 any log-input
+deny ip any 255.255.255.255 0.0.0.0 log-input
+deny ip 192.0.2.0 0.0.0.255 any log-input
+deny ip any 192.0.2.0 0.0.0.255 any log-input
 deny ip host 0.0.0.0 any log-input
 deny ip any host 0.0.0.0 log-input
 deny ip host 255.255.255.255 any log-input

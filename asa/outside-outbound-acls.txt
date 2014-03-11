@@ -1,0 +1,28 @@
+access-list OUTSIDE_OUTBOUND extended deny ip 248.0.0.0 7.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 248.0.0.0 7.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 255.255.255.255 0.0.0.0 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 255.255.255.255 0.0.0.0 log
+access-list OUTSIDE_OUTBOUND extended deny ip 192.0.2.0 0.0.0.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 192.0.2.0 0.0.0.255 any
+access-list OUTSIDE_OUTBOUND extended deny ip host 0.0.0.0 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any host 0.0.0.0 log
+access-list OUTSIDE_OUTBOUND extended deny ip host 255.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any host 255.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 127.0.0.0 0.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 127.0.0.0 0.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 224.0.0.0 15.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 224.0.0.0 15.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 240.0.0.0 7.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 240.0.0.0 7.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 0.0.0.0 0.255.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 0.0.0.0 0.255.255.255 log
+access-list OUTSIDE_OUTBOUND extended deny ip 169.254.0.0 0.0.255.255 any log
+access-list OUTSIDE_OUTBOUND extended deny ip any 169.254.0.0 0.0.255.255 log
+
+access-list OUTSIDE_OUTBOUND extended permit icmp OUR_IP_RANGE OUR_MASK any 0
+access-list OUTSIDE_OUTBOUND extended permit icmp OUR_IP_RANGE OUR_MASK any 3
+access-list OUTSIDE_OUTBOUND extended permit icmp OUR_IP_RANGE OUR_MASK any 8
+access-list OUTSIDE_OUTBOUND extended permit icmp OUR_IP_RANGE OUR_MASK any 11
+access-list OUTSIDE_OUTBOUND extended permit icmp OUR_IP_RANGE OUR_MASK any 12
+
+access-list OUTSIDE_OUTBOUND extended permit tcp OUR_IP_RANGE OUR_MASK any eq NEEDED_PORT
