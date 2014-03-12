@@ -1,0 +1,40 @@
+dot11 ssid SSID_NAME
+auth open
+auth key-management wpa
+wpa-psk ascii PASSWORD
+! - IF VLANs
+vlan VLAN_NUMBER
+!
+!
+int dot0
+ssid SSID_NAME
+exit
+!
+encryption mode ciphers aes
+!
+!
+! - If VLANs
+encryption vlan VLAN_NUMBER mode ciphers aes
+!
+!
+! - If VLANs
+dot11 0.VLAN_NUMBER
+bridge-group NUMBER
+encapsulation dot1q VLAN_NUMBER
+exit
+!
+!
+int INTERFACE 0
+bridge-group 1
+!
+! - If VLANs
+int INTERFACE 0.VLAN_NUMBER
+bridge-group NUMBER
+encapsulation dot1q VLAN_NUMBER
+exit
+!
+! Management Interface
+BVI#
+bridge-group #
+exit
+
