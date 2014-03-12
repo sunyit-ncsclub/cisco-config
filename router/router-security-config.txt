@@ -97,6 +97,7 @@ line vty 2 4
 transport input none
 transport preferred none
 access DENY_ALL in
+exit
 !
 privilege exec level 15 connect
 privilege exec level 15 telnet
@@ -108,9 +109,31 @@ privilege exec level 15 show logging
 privilege exec level 15 show ip
 !
 !
+! Filters out certain websites
+class-map match-any URL-FILTER-CLASS
+!
+match protocol http host "*domain.com"
+exit
+!
+!
+policy-map URL_FILTER_MAP
+!
+class URL-FILTER-CLASS
+!
+drop
+!
+exit
+!
+exit
+!
+!
 ! - INTERFACES
 !
 int INTERFACE_NAME_OUTSIDE
+!
+! For URL filtering
+!
+service-policy output URL_FILTER_MAP
 !
 no ip redirects
 no ip directed-broadcast
