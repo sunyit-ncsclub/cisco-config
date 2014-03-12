@@ -23,7 +23,7 @@ no service pad
 no lldp run global
 !
 ! - Set the DNS Server
-ip name-server x.x.x.10
+ip name-server DNS_SERVER_IP
 !
 !
 ! - Secure the boot image

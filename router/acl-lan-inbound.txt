@@ -1,4 +1,11 @@
-ip acc extend LAN_INBOUND
+! VARIABLES:
+! LAN_IP_RANGE: The LAN interface's IP range
+! LAN_MASK: The LAN interface's IP mask
+! NEEDED_PORT: A port for a needed service (from the hosts)
+! 
+
+
+ip access extend LAN_INBOUND
 !
 !
 remark -- Deny Fragments --
@@ -45,16 +52,16 @@ evaluate LAN_SERVER_REFLECTIVE
 !
 remark -- Allow only necessary services from the hosts --
 !
-permit tcp x.x.x.0 255.255.255.0 any eq 22 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 80 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 443 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 21 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 20 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
-permit udp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 22 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 80 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 443 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 21 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 20 reflect LAN_HOST_REFLECTIVE
+permit tcp LAN_IP_RANGE LAN_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
+permit udp LAN_IP_RANGE LAN_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
 ! if needed for DHCP
-permit udp x.x.x.0 255.255.255.0 any eq 67 reflect LAN_HOST_REFLECTIVE
-permit udp x.x.x.0 255.255.255.0 any eq 68 reflect LAN_HOST_REFLECTIVE
+permit udp LAN_IP_RANGE LAN_MASK any eq 67 reflect LAN_HOST_REFLECTIVE
+permit udp LAN_IP_RANGE LAN_MASK any eq 68 reflect LAN_HOST_REFLECTIVE
 !
 permit tcp OUR_IP_RANGE OUR_MASK any eq NEEDED_PORT reflect LAN_HOST_REFLECTIVE
 ...
@@ -62,11 +69,11 @@ permit tcp OUR_IP_RANGE OUR_MASK any eq NEEDED_PORT reflect LAN_HOST_REFLECTIVE
 !
 remark -- Allow certain ICMP --
 !
-permit icmp OUR_IP_RANGE OUR_MASK any 0
-permit icmp OUR_IP_RANGE OUR_MASK any 3 4
-permit icmp OUR_IP_RANGE OUR_MASK any 8
-permit icmp OUR_IP_RANGE OUR_MASK any 11
-permit icmp OUR_IP_RANGE OUR_MASK any 12
+permit icmp LAN_IP_RANGE LAN_MASK any 0
+permit icmp LAN_IP_RANGE LAN_MASK any 3 4
+permit icmp LAN_IP_RANGE LAN_MASK any 8
+permit icmp LAN_IP_RANGE LAN_MASK any 11
+permit icmp LAN_IP_RANGE LAN_MASK any 12
 !
 !
 remark -- Deny all other ICMP --

@@ -1,4 +1,10 @@
-ip acc extend OUTSIDE_OUTBOUND
+! VARIABLES:
+! SUMMARY_IP_RANGE: Our total IP range
+! SUMMARY_MASK: Our total IP mask
+! 
+
+
+ip access extend OUTSIDE_OUTBOUND
 !
 !
 remark -- Deny Fragments --
@@ -11,7 +17,7 @@ deny ip any any fragments log-input
 !
 remark -- Disallow spoofing --
 !
-deny ip any OUR_IP_RANGE OUR_MASK 
+deny ip any SUMMARY_IP_RANGE SUMMARY_MASK
 !
 !
 remark -- Disallow other bad stuff --
@@ -45,7 +51,7 @@ evaluate OUTSIDE_INBOUND_REFLECTIVE
 !
 remark -- Allow connections from our range out --
 !
-permit ip OUR_IP_RANGE OUR_MASK any reflect OUTSIDE_OUTBOUND_REFLECTIVE
+permit ip SUMMARY_IP_RANGE SUMMARY_MASK any reflect OUTSIDE_OUTBOUND_REFLECTIVE
 !
 !
 remark -- Block everything else -- 

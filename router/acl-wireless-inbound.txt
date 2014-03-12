@@ -1,4 +1,11 @@
-ip acc extend WIRELESS_INBOUND
+! VARIABLES:
+! WIRELESS_IP_RANGE: The LAN interface's IP range
+! WIRELESS_MASK: The LAN interface's IP mask
+! NEEDED_PORT: A port for a needed service (from the hosts)
+! 
+
+
+ip access extend WIRELESS_INBOUND
 !
 !
 remark -- Deny connections to the router to this box --
@@ -50,11 +57,11 @@ deny ip any LAN_IP LAN_MASK log-input
 !
 remark -- Allow certain ICMP --
 !
-permit icmp OUR_IP_RANGE OUR_MASK any 0
-permit icmp OUR_IP_RANGE OUR_MASK any 3 4
-permit icmp OUR_IP_RANGE OUR_MASK any 8
-permit icmp OUR_IP_RANGE OUR_MASK any 11
-permit icmp OUR_IP_RANGE OUR_MASK any 12
+permit icmp WIRELESS_IP_RANGE WIRELESS_MASK any 0
+permit icmp WIRELESS_IP_RANGE WIRELESS_MASK any 3 4
+permit icmp WIRELESS_IP_RANGE WIRELESS_MASK any 8
+permit icmp WIRELESS_IP_RANGE WIRELESS_MASK any 11
+permit icmp WIRELESS_IP_RANGE WIRELESS_MASK any 12
 !
 !
 remark -- Deny all other ICMP --
@@ -64,18 +71,18 @@ deny icmp any any log-input
 !
 remark -- Allow only necessary services from the hosts --
 !
-permit tcp x.x.x.0 255.255.255.0 any eq 22 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 80 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 443 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 21 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 20 reflect LAN_HOST_REFLECTIVE
-permit tcp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
-permit udp x.x.x.0 255.255.255.0 any eq 53 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 22 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 80 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 443 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 21 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 20 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
 ! if needed for DHCP
-permit udp x.x.x.0 255.255.255.0 any eq 67 reflect LAN_HOST_REFLECTIVE
-permit udp x.x.x.0 255.255.255.0 any eq 68 reflect LAN_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 67 reflect LAN_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 68 reflect LAN_HOST_REFLECTIVE
 !
-permit tcp WIRELESS_IP WIRELESS_MASK any eq NEEDED_PORT reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq NEEDED_PORT reflect WIRELESS_HOST_REFLECTIVE
 ...
 !
 !

@@ -1,3 +1,13 @@
+! VARIABLES:
+! SUMMARY_IP_RANGE: Our total IP range
+! SUMMARY_MASK: Our total IP mask
+! SERVER_IP: IP address for a server
+! NEEDED_PORT: A port for a needed service (from the hosts)
+! 
+
+
+access-list OUTSIDE_INBOUND extended deny SUMMARY_IP_RANGE SUMMARY_MASK any log
+
 access-list OUTSIDE_INBOUND extended deny ip 248.0.0.0 7.255.255.255 any log
 access-list OUTSIDE_INBOUND extended deny ip any 248.0.0.0 7.255.255.255 log
 access-list OUTSIDE_INBOUND extended deny ip 255.255.255.255 0.0.0.0 any log
@@ -19,10 +29,10 @@ access-list OUTSIDE_INBOUND extended deny ip any 0.0.0.0 0.255.255.255 log
 access-list OUTSIDE_INBOUND extended deny ip 169.254.0.0 0.0.255.255 any log
 access-list OUTSIDE_INBOUND extended deny ip any 169.254.0.0 0.0.255.255 log
 
-access-list OUTSIDE_INBOUND extended permit icmp any OUR_IP_RANGE OUR_MASK 0
-access-list OUTSIDE_INBOUND extended permit icmp any OUR_IP_RANGE OUR_MASK 3
-access-list OUTSIDE_INBOUND extended permit icmp any OUR_IP_RANGE OUR_MASK 8
-access-list OUTSIDE_INBOUND extended permit icmp any OUR_IP_RANGE OUR_MASK 11
-access-list OUTSIDE_INBOUND extended permit icmp any OUR_IP_RANGE OUR_MASK 12
+access-list OUTSIDE_INBOUND extended permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 0
+access-list OUTSIDE_INBOUND extended permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 3
+access-list OUTSIDE_INBOUND extended permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 8
+access-list OUTSIDE_INBOUND extended permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 11
+access-list OUTSIDE_INBOUND extended permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 12
 
 access-list OUTSIDE_INBOUND extended permit tcp any host SERVER_IP eq NEEDED_PORT

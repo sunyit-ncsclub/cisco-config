@@ -1,4 +1,17 @@
-ip acc extend LAN_OUTBOUND
+! VARIABLES:
+! SERVER_IP: IP address for a server
+! NEEDED_PORT: A port for a needed service (to the server)
+! LAN_IP_RANGE: The LAN interface's IP range
+! LAN_MASK: The LAN interface's IP mask
+! 
+
+
+ip access extend LAN_OUTBOUND
+!
+!
+remark -- Disallow spoofing --
+!
+deny ip LAN_IP_RANGE LAN_MASK any
 !
 !
 evaluate LAN_HOST_REFLECTIVE
@@ -12,11 +25,11 @@ permit tcp any host SERVER_IP eq NEEDED_PORT reflect LAN_SERVER_REFLECTIVE
 !
 remark -- Allow certain ICMP --
 !
-permit icmp any OUR_IP_RANGE OUR_MASK 0
-permit icmp any OUR_IP_RANGE OUR_MASK 3 4
-permit icmp any OUR_IP_RANGE OUR_MASK 8
-permit icmp any OUR_IP_RANGE OUR_MASK 11
-permit icmp any OUR_IP_RANGE OUR_MASK 12
+permit icmp any LAN_IP_RANGE LAN_MASK 0
+permit icmp any LAN_IP_RANGE LAN_MASK 3 4
+permit icmp any LAN_IP_RANGE LAN_MASK 8
+permit icmp any LAN_IP_RANGE LAN_MASK 11
+permit icmp any LAN_IP_RANGE LAN_MASK 12
 !
 !
 remark -- Deny all other ICMP --

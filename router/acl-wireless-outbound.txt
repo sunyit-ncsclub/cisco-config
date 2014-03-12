@@ -1,4 +1,15 @@
-ip acc extend WIRELESS_OUTBOUND
+! VARIABLES:
+! WIRELESS_IP_RANGE: The LAN interface's IP range
+! WIRELESS_MASK: The LAN interface's IP mask
+!
+
+
+ip access extend WIRELESS_OUTBOUND
+!
+!
+remark -- Disallow spoofing --
+!
+deny ip WIRELESS_IP_RANGE WIRELESS_MASK any
 !
 !
 evaluate WIRELESS_HOST_REFLECTIVE
@@ -6,11 +17,11 @@ evaluate WIRELESS_HOST_REFLECTIVE
 !
 remark -- Allow certain ICMP --
 !
-permit icmp any OUR_IP_RANGE OUR_MASK 0
-permit icmp any OUR_IP_RANGE OUR_MASK 3 4
-permit icmp any OUR_IP_RANGE OUR_MASK 8
-permit icmp any OUR_IP_RANGE OUR_MASK 11
-permit icmp any OUR_IP_RANGE OUR_MASK 12
+permit icmp any WIRELESS_IP_RANGE WIRELESS_MASK 0
+permit icmp any WIRELESS_IP_RANGE WIRELESS_MASK 3 4
+permit icmp any WIRELESS_IP_RANGE WIRELESS_MASK 8
+permit icmp any WIRELESS_IP_RANGE WIRELESS_MASK 11
+permit icmp any WIRELESS_IP_RANGE WIRELESS_MASK 12
 !
 !
 remark -- Deny all other ICMP --

@@ -1,9 +1,17 @@
-ip acc extend SERVERS_INBOUND
+! VARIABLES:
+! LAN_IP_RANGE: The LAN interface's IP range
+! SERVER_IP_RANGE: The server interface's IP range
+! SERVER_MASK: The server IP mask
+! NEEDED_PORT: A port for a needed service (from the hosts)
+! 
+
+
+ip access extend SERVERS_INBOUND
 !
 !
 remark -- Deny traffic to LAN --
 !
-deny ip any OUR_LAN_RANGE log-input
+deny ip any LAN_IP_RANGE log-input
 !
 !
 remark -- Deny Fragments --
@@ -50,17 +58,17 @@ evaluate SERVER_REFLECTIVE
 !
 remark -- Allow only necessary services from the hosts --
 !
-permit tcp OUR_IP_RANGE OUR_MASK any eq NEEDED_PORT reflect SERVERS_GENERAL_REFLECTIVE
+permit tcp SERVER_IP_RANGE SERVER_MASK any eq NEEDED_PORT reflect SERVERS_GENERAL_REFLECTIVE
 ...
 !
 !
 remark -- Allow certain ICMP --
 !
-permit icmp OUR_IP_RANGE OUR_MASK any 0
-permit icmp OUR_IP_RANGE OUR_MASK any 3 4
-permit icmp OUR_IP_RANGE OUR_MASK any 8
-permit icmp OUR_IP_RANGE OUR_MASK any 11
-permit icmp OUR_IP_RANGE OUR_MASK any 12
+permit icmp SERVER_IP_RANGE SERVER_MASK any 0
+permit icmp SERVER_IP_RANGE SERVER_MASK any 3 4
+permit icmp SERVER_IP_RANGE SERVER_MASK any 8
+permit icmp SERVER_IP_RANGE SERVER_MASK any 11
+permit icmp SERVER_IP_RANGE SERVER_MASK any 12
 !
 !
 remark -- Deny all other ICMP --

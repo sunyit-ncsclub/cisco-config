@@ -1,4 +1,12 @@
-ip acc extend OUTSIDE_INBOUND
+! VARIABLES:
+! SUMMARY_IP_RANGE: Our total IP range
+! SUMMARY_MASK: Our total IP mask
+! SERVER_IP: IP address for a server
+! NEEDED_PORT: A port for a needed service (from the hosts)
+! 
+
+
+ip access extend OUTSIDE_INBOUND
 !
 !
 remark -- Deny connections to this device, careful if there is NAT --
@@ -26,7 +34,7 @@ evaluate OUTSIDE_OUTBOUND_REFLECTIVE
 !
 remark -- Disallow spoofing --
 !
-deny ip x.x.x.0  255.255.255.0 any
+deny ip SUMMARY_IP_RANGE SUMMARY_MASK any
 !
 !
 remark -- Disallow unroutable addresses --
@@ -59,11 +67,11 @@ deny ip any 169.254.0.0 0.0.255.255 log-input
 !
 remark -- Allow certain ICMP, For info on codes: http://www.erg.abdn.ac.uk/~gorry/eg3567/inet-pages/icmp-code.html --
 !
-permit icmp any OUR_IP_RANGE OUR_MASK 0
-permit icmp any OUR_IP_RANGE OUR_MASK 3 4
-permit icmp any OUR_IP_RANGE OUR_MASK 8
-permit icmp any OUR_IP_RANGE OUR_MASK 11
-permit icmp any OUR_IP_RANGE OUR_MASK 12
+permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 0
+permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 3 4
+permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 8
+permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 11
+permit icmp any SUMMARY_IP_RANGE SUMMARY_MASK 12
 !
 !
 remark -- Disallow all other ICMP --
@@ -73,7 +81,7 @@ deny icmp any any log-input
 !
 remark -- Allow connections to services -- 
 !
-permit tcp any host x.x.x.z eq PORT reflect OUTSIDE_INBOUND_REFLECTIVE
+permit tcp any host SERVER_IP eq NEEDED_PORT reflect OUTSIDE_INBOUND_REFLECTIVE
 ...
 !
 !
