@@ -37,9 +37,9 @@ secure boot-image
 !management-interface INSIDE_INTERFACE allow ssh
 !exit
 !
-service tcp-keep
 service timestamps log datetime msec localtime show-timezone
-service sequence-numbers logging rate-limit all 10 except error
+service sequence-numbers 
+! logging rate-limit all 10 except error
 !
 ! - Enable keepalives
 service tcp-keepalives-out
@@ -57,7 +57,9 @@ service pass
 !
 ! - Configure SSH
 !
+ip domain-name DOMAIN
 crypto key gen rsa
+2048
 ip ssh ver 2 
 ip ssh auth 2
 ip ssh time 30
@@ -83,11 +85,11 @@ exit
 line vty 0 1
 !
 transport input ssh
+transport output ssh
 transport pref ssh
 login local
 access REMOTE in
 exec-timeout 2
-service tcp-keep
 exit
 !
 no line vty 5 1000000000000000000000
@@ -95,10 +97,12 @@ no line vty 5 1000000000000000000000
 line vty 2 4
 !
 transport input none
+transport output none
 transport preferred none
 access DENY_ALL in
 exit
 !
+privilege exec level 15 access-enable
 privilege exec level 15 connect
 privilege exec level 15 telnet
 privilege exec level 15 ssh

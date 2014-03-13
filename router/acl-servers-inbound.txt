@@ -1,5 +1,6 @@
 ! VARIABLES:
 ! LAN_IP_RANGE: The LAN interface's IP range
+! LAN_MASK: The mask of the LAN
 ! SERVER_IP_RANGE: The server interface's IP range
 ! SERVER_MASK: The server IP mask
 ! NEEDED_PORT: A port for a needed service (from the hosts)
@@ -11,7 +12,7 @@ ip access extend SERVERS_INBOUND
 !
 remark -- Deny traffic to LAN --
 !
-deny ip any LAN_IP_RANGE log-input
+deny ip any LAN_IP_RANGE LAN_MASK log-input
 !
 !
 remark -- Deny Fragments --

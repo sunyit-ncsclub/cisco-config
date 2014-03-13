@@ -1,7 +1,10 @@
 ! VARIABLES:
+! ROUTER_INTERFACE_IP: The IP of the router interface
 ! WIRELESS_IP_RANGE: The LAN interface's IP range
 ! WIRELESS_MASK: The LAN interface's IP mask
 ! NEEDED_PORT: A port for a needed service (from the hosts)
+! LAN_IP_RANGE: The LAN interface's IP range
+! LAN_MASK: The mask of the LAN
 ! 
 
 
@@ -33,9 +36,9 @@ deny ip any 248.0.0.0 7.255.255.255 log-input
 deny ip 255.255.255.255 0.0.0.0 any log-input
 deny ip any 255.255.255.255 0.0.0.0 log-input
 deny ip 192.0.2.0 0.0.0.255 any log-input
-deny ip any 192.0.2.0 0.0.0.255 any log-input
-deny ip host 0.0.0.0 any log-input log-input
-deny ip any host 0.0.0.0 log-input log-input
+deny ip any 192.0.2.0 0.0.0.255 log-input
+deny ip host 0.0.0.0 any log-input
+deny ip any host 0.0.0.0 log-input
 deny ip host 255.255.255.255 any log-input
 deny ip any host 255.255.255.255 log-input
 deny ip 127.0.0.0 0.255.255.255 any log-input
@@ -52,7 +55,7 @@ deny ip any 169.254.0.0 0.0.255.255 log-input
 !
 remark -- Deny connections to LAN parts -- 
 !
-deny ip any LAN_IP LAN_MASK log-input
+deny ip any LAN_IP_RANGE LAN_MASK log-input
 !
 !
 remark -- Allow certain ICMP --
@@ -71,16 +74,16 @@ deny icmp any any log-input
 !
 remark -- Allow only necessary services from the hosts --
 !
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 22 reflect LAN_HOST_REFLECTIVE
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 80 reflect LAN_HOST_REFLECTIVE
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 443 reflect LAN_HOST_REFLECTIVE
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 21 reflect LAN_HOST_REFLECTIVE
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 20 reflect LAN_HOST_REFLECTIVE
-permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
-permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect LAN_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 22 reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 80 reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 443 reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 21 reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 20 reflect WIRELESS_HOST_REFLECTIVE
+permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect WIRELESS_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 53 reflect WIRELESS_HOST_REFLECTIVE
 ! if needed for DHCP
-permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 67 reflect LAN_HOST_REFLECTIVE
-permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 68 reflect LAN_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 67 reflect WIRELESS_HOST_REFLECTIVE
+permit udp WIRELESS_IP_RANGE WIRELESS_MASK any eq 68 reflect WIRELESS_HOST_REFLECTIVE
 !
 permit tcp WIRELESS_IP_RANGE WIRELESS_MASK any eq NEEDED_PORT reflect WIRELESS_HOST_REFLECTIVE
 ...
